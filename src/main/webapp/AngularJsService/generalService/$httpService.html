@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs 中的 $http 服务(注入到自定义Service中)</title>
+    <script type="text/javascript" src="/webapp/js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="httpController">
+        {{r[1]}}
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+
+    app1.service("httpService", function ($http) {
+        var username = "";
+
+        this.setName = function (name) {
+            username = name;
+        }
+        this.getName = function () {
+            return username;
+        }
+
+        this.getData = function () {
+            //jsonP请求
+            var url = "http://www.phonegap100.com/appapi.php?a=getPortalList&catid=20&page=1&callback=JSON_CALLBACK";
+            return $http.jsonp(url);
+            //return $http.jsonp(url,{cache:true});//get和jsonp中使用，相同的请求只请求一次
+        }
+    });
+
+    app1.controller("httpController", function ($scope, httpService) {
+        httpService.getData().success(function (data) {
+            console.log(data.result);
+            $scope.r = data.result;
+        }).error(function (data) {
+            console.log(data);
+        });
+    });
+</script>
+</body>
+</html>

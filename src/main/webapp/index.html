@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8" content="text/html" http-equiv="content-type">
+    <title>$http.get以及post请求和跨域jsonP请求</title>
+    <script type="text/javascript" src="js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        <div ng-bind="name"></div>
+        <div ng-bind="data"></div>
+    </div>
+    {{name}}  <!--这个在testController的作用域以外，无法正确显示-->
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+    app1.controller("userController", function ($scope, $http) {
+        $scope.name = "张魏魏";
+
+        //get请求
+        var config = {params:{id:"5"}};  /* 写在config中和url后面是一样的，可以在后台直接request.getParameter("id")获取到 */
+        $http.get("DataHander?id=5").success(function (data, status, headers, config) {
+            console.log(data);
+            console.log(status);
+            console.log(headers);
+            console.log(config);
+        }).error(function (data, status, headers, config) {
+            console.log(data);
+            console.log(status);
+            console.log(headers);
+            console.log(config);
+        });
+
+        //post请求
+        var postData = {text:"这是post的内容"};
+        var config = {params:{id:"5"}};
+        $http.post("DataHander",postData,config).success(function(data, status, headers, config){
+            console.log(data);
+            console.log(status);
+            console.log(headers);
+            console.log(config);
+        }).error(function(data, status, headers, config){
+            console.log(data);
+            console.log(status);
+            console.log(headers);
+            console.log(config);
+        });
+
+        //jsonP请求
+        var url = "http://www.phonegap100.com/appapi.php?a=getPortalList&catid=20&page=1&callback=JSON_CALLBACK";
+        $http.jsonp(url).success(function(data){
+            $scope.data = data.result;
+        }).error(function(data){
+            alert(data);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>provide 里 provider 方法自定义服务</title>
+    <script type="text/javascript" src="../js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="providerController">
+        {{name}}
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", [], function ($provide) {
+        /*通过第三个参数配置，$provide.provider，$provide.factory,$provide.service都可以*/
+        $provide.provider('providerService', function () {
+            this.$get = function () {
+                return {
+                    message: "this is provideService"
+                }
+            }
+        });
+    });
+
+    /*直接model.provider,同理model.service,model.factory*/
+    app1.provider('providerService1', function () {
+        this.$get = function () {
+            return {
+                message: "this is provideService1"
+            }
+        }
+    });
+
+    /*配置的方式，三种都可以*/
+    app1.config(function ($provide) {
+        /*配置的第一个service*/
+        $provide.provider('providerService2', function () {
+            this.$get = function () {
+                return{
+                    message: "this is provideService2"
+                }
+            }
+        });
+
+        /*配置的第二个service*/
+        $provide.provider('providerService3', function () {
+            this.$get = function () {
+                return "this is provideService3 text"
+            }
+        });
+
+        /*配置的第三个service*/
+        $provide.provider('providerService4', function () {
+            this.$get = function () {
+                var userName = "";
+                var service = {};
+                service.setName = function (name) {
+                    userName = name;
+                }
+                service.getName = function () {
+                    return userName;
+                }
+                return service;
+            }
+        });
+    });
+
+    //注入自定义service
+    app1.controller("providerController", function ($scope, providerService, providerService1, providerService2, providerService3, providerService4) {
+        console.log(providerService);  //Object {message: "this is provideService"}
+        console.log(providerService1); //Object {message: "this is provideService1"}
+        console.log(providerService2); //Object {message: "this is provideService2"}
+        console.log(providerService3); //this is provideService3 text
+        console.log(providerService4); //Object
+
+        providerService4.setName("zhuhuan");
+        $scope.name = providerService4.getName();
+    });
+</script>
+</body>
+</html>

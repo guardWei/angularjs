@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs 工具方法以及Angularjs中使用jQuery</title>
+    <script type="text/javascript" src="js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="firstController">
+        {{isArray}}
+        {{Name}}
+        {{bool}}
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+    app1.controller("firstController", function ($scope) {
+
+        $scope.name = "zhangww";
+        $scope.arr = [1, 2, 3];
+        $scope.isArray = angular.isArray($scope.arr);
+        $scope.Name = angular.uppercase($scope.name);
+
+        $scope.a = "111";
+        $scope.b = "222";
+        $scope.bool = angular.equals($scope.a, $scope.b);
+
+        $scope.A1 = {name: "zww"};
+        $scope.A2 = {age: 10};
+        $scope.c = angular.extend($scope.A2, $scope.A1);
+        //console.log($scope.A1); //Object {name: "zww"}
+        // console.log($scope.A2);//Object {age: 10, name: "zww"}
+
+
+        var json = {"name": "zww", "age": "20"};//这个为json对象
+        //console.log(json); //Object {name: "zww", age: "20"}
+        $scope.json = angular.toJson(json);//true格式话json字符串
+        //console.log($scope.json);//{"name":"zww","age":"20"}
+
+
+        var json = '{"name":"zww","age":"20"}';//这个为json字符串
+        // console.log(json);
+        $scope.json = angular.fromJson(json);//字符串转换为json对象
+        // console.log($scope.json);
+
+        $scope.A1 = {name: "zww"};
+        $scope.A2 = {age: 10};
+        $scope.c = angular.copy($scope.A2, $scope.A1);
+        //console.log($scope.A1); //Object {age: 10}
+        //console.log($scope.A2); //Object {age: 10}
+        /*注意： angular.extend(dist,src) 而angular.copy(src,dist)*/
+
+
+        var json = {"name": "zww", "age": "20"};
+        angular.forEach(json, function (val, key) {
+            //console.log(val);
+            //console.log(key);
+        });
+
+
+        var json = {"name": "zww", "age": "20"};
+        var result = [];//forEach的第三个参数
+        angular.forEach(json, function (val, key) {
+            this.push(key + '-' + val)
+        }, result);
+        //console.log(result);//["name-zww", "age-20"]
+
+
+       /*绑定对象，作为上下文*/
+        var self = {"name":"zhangww"};
+        var f = angular.bind(self,function(age){
+            $scope.info = this.name +" is " + age;
+            //console.log($scope.info); //zhangww is 24
+        });
+        f(24);//参数也可以放在bind()的第三个参数中
+    });
+</script>
+</body>
+</html>

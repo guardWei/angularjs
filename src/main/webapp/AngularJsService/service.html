@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>provide 里 service方法自定义服务</title>
+    <script type="text/javascript" src="../js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="serviceController">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", [], function ($provide) {
+
+        /*返回对象*/
+        $provide.service("serviceService1", function () {
+            return {
+                message: "this is serviceService1"
+            }
+        });
+
+        /*返回字符串  (验证得不可行,factory和provider可以)*/
+        $provide.service("serviceService2", function () {
+            return "this is serviceService2 text"
+        });
+    });
+
+
+    app1.controller("serviceController", function ($scope, serviceService1, serviceService2) {
+        console.log(serviceService1); //Object  message: "this is factoryService1"
+        console.log(serviceService2); //Object {}不可行
+    });
+
+</script>
+</body>
+</html>

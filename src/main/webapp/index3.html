@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs模块的run 方法 </title>
+    <script type="text/javascript" src="js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="firstController">
+        {{name}}
+        {{flag}}
+    </div>
+    <div ng-controller="secondController">
+        {{name}}
+        {{flag}}
+        {{sex}}
+    </div>
+    {{sex}}
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1",[]);
+    app1.controller("firstController",function($scope){
+        $scope.name = "zhangww";
+
+    });
+    app1.controller("secondController",function($scope,$rootScope){
+        $scope.name="zhuanhuan";
+        $rootScope.flag = "true";
+    });
+    app1.run(function($rootScope){
+        $rootScope.sex = "男";   /*run方法只能注入全局的rootScope,用于全局的一些操作*/
+    });
+</script>
+</body>
+</html>

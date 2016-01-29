@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs 事件指令和input 相关指令和ng-bind相关指令</title>
+    <script type="text/javascript" src="js/angular.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.1/angular-sanitize.js"></script>-->
+    <script type="text/javascript" src="js/angular-sanitize.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        <input type="button" ng-value="text" ng-disabled="isDisabled"/>
+        <input type="text" value="{{text}}" ng-readonly="isDisabled"/>
+        <input type="checkbox" ng-checked="isDisabled"/>
+        <!--这里要注意：如果使用checked="{{isDisabled}}   readonly="{{isDisabled}} 则无法用angularjs来改变其状态"-->
+    </div>
+    <div ng-controller="bindController">
+        <div ng-bind="text3"></div>
+        <div ng-bind-template="{{text1}} {{text2}}"></div>
+        <div ng-bind-html="text3"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngSanitize']);
+    app1.controller("userController", function ($scope, $interval) {
+        $scope.isDisabled = true;
+
+        var n = 5;
+        $scope.text = "还剩下" + n + "秒";
+
+        var timer = $interval(function () {
+            n--;
+            $scope.text = "还剩下" + n + "秒";
+
+            if (n == 0) {
+                $interval.cancel(timer);   //取消计时器（在setTimeout中也可以使用）
+                $scope.isDisabled = false;
+                $scope.text = "可以点击了";
+            }
+        }, 1000);
+    });
+
+    app1.controller("bindController", function ($scope) {
+        $scope.text1 = "这是text1";
+        $scope.text2 = "这是text2";
+
+        $scope.text3 = "<h2>这是h2</h2>";
+    })
+</script>
+</body>
+</html>

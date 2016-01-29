@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>provide 里 factory方法自定义服务</title>
+    <script type="text/javascript" src="../js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="factoryController">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", [], function ($provide) {
+
+        /*返回对象*/
+        $provide.factory("factoryService1", function () {
+            return {
+                message: "this is factoryService1"
+            }
+        });
+
+        /*返回字符串*/
+        $provide.factory("factoryService2", function () {
+            return "this is factoryService2 text"
+        });
+    });
+
+    app1.controller("factoryController", function ($scope, factoryService1, factoryService2) {
+        console.log(factoryService1); //Object  message: "this is factoryService1"
+        console.log(factoryService2); //this is factoryService2 text
+    });
+
+</script>
+</body>
+</html>

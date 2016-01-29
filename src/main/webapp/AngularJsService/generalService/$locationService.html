@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> Angularjs 中的 $location $anchorScroll 服务</title>
+    <script type="text/javascript" src="/webapp/js/angular.js"></script>
+    <style type="text/css">
+        #parent div {
+            width: 300px;
+            height: 500px;
+            border: 1px #000 solid;
+            margin: 20px;
+        }
+
+        #parent ul {
+            width: 200px;
+            position: fixed;
+            top: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+<div ng-app="app1">
+    <div id="parent" ng-controller="locationController">
+        <ul>
+            <li ng-repeat="id in [1,2,3,4,5]" ng-click="changeDiv('div'+id)">Div {{id}}</li>
+        </ul>
+
+        <div ng-repeat="id in [1,2,3,4,5]" ng-init="col = ['red','yellow','black','orange','blue']"
+             style="background: {{col[id-1]}}" ng-attr-id="div{{id}}">
+            Div {{id}}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+
+    app1.controller("locationController", function ($scope, $location,$anchorScroll) {
+         $scope.changeDiv = function(div){
+             $location.hash(div);
+             /*hash()：读、写；当带有参数时，返回哈希碎片；当在带有参数的情况下，改变
+             哈希碎片时，返回$location。*/
+         }
+    });
+</script>
+</body>
+</html>

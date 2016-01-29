@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$scope作用域以及继承和依赖注入代码压缩的问题</title>
+    <script type="text/javascript" src="js/angular.js"></script>
+</head>
+<body>
+    <div ng-app="app1">
+        <div ng-controller="firstController">
+            {{name}}
+            {{flag}}
+        </div>
+        <div ng-controller="secondController">
+            {{name}}
+            {{flag}}
+            {{sex}}
+            <div ng-controller="thirdController">
+                {{name}}   <!--继承来自上一层的name-->
+                {{age}}
+                {{sex}}    <!--覆盖上一层的的sex-->
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    var app1 = angular.module("app1",[]);
+    app1.controller("firstController",function($scope){
+        $scope.name = "zhangww";
+
+    });
+    app1.controller("secondController",function($scope,$rootScope){
+        $scope.name="zhuanhuan";
+        $scope.sex="男";
+        $rootScope.flag = "true";
+    });
+    app1.controller("thirdController", ["$scope",function ($s) {   /*解决代码压缩时方法名和参数可能被压缩时导致$scope找不到*/
+        $s.sex="女";
+        $s.age="12岁";
+    }])
+</script>
+</body>
+</html>

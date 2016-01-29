@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>angularJs过滤器</title>
+    <script type="text/javascript" src="js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        {{name | uppercase}}
+        {{lastName | lowercase}}
+        {{price | currency}}
+        <br/>
+        <ul>
+            <li ng-repeat="p in person | orderBy:'age'">
+                姓名：{{p.name}}
+                年龄：{{p.age}}
+            </li>
+        </ul>
+    </div>
+
+    <!--输入过滤-->
+    <div ng-controller="filterController">
+        <p>输入过滤：</p>
+
+        <p><input type="text" ng-model="names"/></p>
+        <ul>
+            <li ng-repeat="n in person | filter:names | orderBy:'age'">
+                {{(n.name | uppercase)+","+n.age}}
+            </li>
+        </ul>
+        <p>只对name筛选</p>
+        <ul>
+            <li ng-repeat="n in person | filter:{'name':names} | orderBy:'age'">
+                {{(n.name | uppercase)+","+n.age}}
+            </li>
+        </ul>
+
+        <div>
+            <p>选择含有w的行</p>
+            {{person | filter:"w"}}
+            <br>
+            <br>
+
+            <p>选择name含有h的行</p>
+            {{person | filter:{"name":"h"} }}
+        </div>
+
+        <div>
+            <p>默认的person对象</p>
+            {{person}}
+
+            <br><br>
+
+            <p>age升序</p>
+            {{person | orderBy:"age"}}
+
+            <br><br>
+
+            <p>age降序</p>
+            {{person | orderBy:"age":true}}
+            <br><br>
+        </div>
+
+        <div>
+            {{name | myFilter:3:5}}
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+    app1.controller("userController", function ($scope) {
+        $scope.name = "zhangww";
+        $scope.lastName = "ZhuHuan";
+        $scope.price = "123032024240";
+
+        $scope.person = [
+            {name: "zww", age: "24"},
+            {name: "zh", age: "23"}
+        ];
+    });
+
+    app1.controller("filterController", function ($scope, $filter) {
+        $scope.person = [
+            {name: "zww", age: "24"},
+            {name: "zh", age: "23"},
+            {name: "wh", age: "30"}
+        ];
+
+        $scope.name = "zhangww";
+        $scope.uName = $filter("uppercase")($scope.name);
+        //console.log($scope.uName); //ZHANGWW
+    });
+
+    /*自定义过滤器(也可以用外部js的方式引入)*/
+    app1.filter("myFilter", function () {
+        return function (data, n1, n2) {
+            // console.log(data); //zhangww
+
+            //console.log(n1);
+            //console.log(n2);
+            return data.replace(/ww/, "huan");
+        }
+    });
+</script>
+</body>
+</html>

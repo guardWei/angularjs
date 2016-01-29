@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>三种自定义服务的区别</title>
+    <script type="text/javascript" src="/webapp/js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="compareController1">
+
+    </div>
+
+    <div ng-controller="compareController2">
+        {{name}}
+    </div>
+
+    <div ng-controller="compareController3">
+        {{name}}
+
+        <!--**name..-->
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+
+    app1.provider("providerService1", function () {
+        this.$get = function () {
+            return  {message: "this is providerService1"}
+        }
+    });
+
+    app1.service("serviceService1", function () {
+        return {message: "this is serviceService1"}
+    });
+
+    app1.factory("factoryService1", function () {
+        return {message: "this is factoryService1"}
+    });
+
+    app1.controller("compareController1", ["$scope", "providerService1", "serviceService1", "factoryService1",
+        function ($scope, providerService11, serviceService1, factoryService1) {
+            /*上面引号里的常量跟上面定义的service的名字一样，function中注入的变量跟上面的常量一一对应，变量可以简写*/
+            /*console.log($scope);
+             console.log(providerService11);
+             console.log(serviceService1);
+             console.log(factoryService1);*/
+        }
+    ]);
+
+    <!--  -------------------------------------------  -->
+
+    app1.provider("providerService2", function () {
+        this.$get = function () {
+            var userName = "";
+            var service = {};
+            service.setName = function (name) {
+                userName = name;
+            }
+            service.getName = function () {
+                return userName;
+            }
+            return service;
+        }
+    });
+
+    app1.service("serviceService2", function () {
+        var userName = "";
+        /* Service 是用"new"关键字实例化的。因此，你应该给"this"添加属性，然后 service
+         返回"this"。你把 service 传进 controller 之后，在 controller 里 "this" 上的属性
+         就可以通过 service 来使用了
+         */
+        this.setName = function (name) {
+            userName = name;
+        }
+        this.getName = function () {
+            return userName;
+        }
+    });
+
+    app1.factory("factoryService2", function () {
+        var userName = "";
+        var service = {};
+        service.setName = function (name) {
+            userName = name;
+        }
+        service.getName = function () {
+            return userName;
+        }
+        return service;
+    });
+
+    app1.controller("compareController2", function ($scope, providerService2, serviceService2, factoryService2) {
+        console.log(providerService2);
+        console.log(serviceService2);
+        console.log(factoryService2);
+        serviceService2.setName("李四")
+        $scope.name = serviceService2.getName();
+
+    });
+
+
+    <!--  -------------------------------------------  -->
+
+    app1.config(["providerService3Provider", "$interpolateProvider", function (providerService3Provider, $interpolateProvider) {
+        providerService3Provider.name = "张魏魏";
+
+        /*自定义绑定数据的标记*/
+        /*$interpolateProvider.startSymbol("**");
+         $interpolateProvider.endSymbol("..");*/
+    }]);
+
+    app1.provider("providerService3", function () {
+        /*可以在config中配置的属性*/
+        this.name = "";
+
+        this.$get = function () {
+            var that = this;
+            var username = "";
+            var service = {};
+            service.setName = function (name) {
+                username = name;
+            }
+            service.getName = function () {
+                return username;
+            }
+            service.getConfigName = function () {
+                return that.name + "---configName";
+            }
+            return service;
+        }
+    });
+    app1.controller("compareController3", function ($scope, providerService3) {
+        $scope.name = providerService3.getConfigName();
+    });
+
+</script>
+</body>
+</html>

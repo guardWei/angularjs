@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs 中的 $cacheFactory 服务</title>
+    <script type="text/javascript" src="/webapp/js/angular.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="cacheFactoryController">
+
+    </div>
+
+    <div ng-controller="testController">
+        {{name}}
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", []);
+    app1.controller("cacheFactoryController", function ($scope, $cacheFactory) {
+        var cache = $cacheFactory("myCache");
+        cache.put("name", "张三");
+
+        var name = cache.get("name");
+        console.log(name);//张三
+    });
+
+    //在下面这个Controller中取上一个Controller中缓存的数据
+    app1.controller("testController", function ($scope, $cacheFactory) {
+        var cache = $cacheFactory.get("myCache");
+        var name = cache.get("name");
+        $scope.name = name;
+    });
+</script>
+</body>
+</html>

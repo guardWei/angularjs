@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>$sce绑定解析html（参见index6里面引入第三方插件）</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+</head>
+<body>
+<div ng-app="myApp">
+
+    <div ng-controller="firstController">
+        {{name}}
+        <br>
+        {{text}}
+        <br>
+        {{text1}}   <!--还需要在ng-bind-html中-->
+        <br>
+
+        <div ng-bind-html="text1"></div>
+
+        <div ng-bind-html="detailContent()"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+    app.controller('firstController', function ($scope, $timeout, $sce, $http) {
+        $scope.name = 'hello';
+        $scope.text = '<h1>hello angularJs</h1>';
+        $scope.text1 = $sce.trustAsHtml($scope.text);
+        var myUrl = "http://www.phonegap100.com/appapi.php?a=getPortalArticle&aid=338&callback=JSON_CALLBACK";
+        $http.jsonp(myUrl).success(
+                function (data) {
+                    //$scope.portalDetail = data.result[0];
+
+                    $scope.detailContent = function () {
+                        return $sce.trustAsHtml(data.result[0].content);
+                    };
+                }
+        ).error(function () {
+                    alert('失败');
+                });
+    });
+
+
+</script>
+
+</body>
+</html>
