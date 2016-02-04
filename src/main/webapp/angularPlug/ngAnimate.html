@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs 中的 ngAnimate插件(Css方式实现)</title>
+    <script type="text/javascript" src="../js/angular.js"></script>
+    <script type="text/javascript" src="../js/angular-ngAnimate.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.4.0/angular-animate.js"></script>-->
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            background: red;
+            transition: 2s all;
+        }
+
+        .box.ng-enter {  /*这里.ng-enter必须要紧跟.box后面*/
+            opacity: 0;
+        }
+
+        .box.ng-enter-active {
+            opacity: 1;
+        }
+
+        .box.ng-leave {
+            opacity: 1;
+        }
+
+        .box.ng-leave-active {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        <input type="checkbox" ng-model="bBtn"/>
+
+        <div ng-if="bBtn" class="box"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngAnimate']);
+    app1.controller("userController", function ($scope) {
+        $scope.bBtn = true;
+    });
+</script>
+
+<!--ngAnimate CSS3 的方式（1）：
+ng-enter
+ng-enter-active
+ng-leave
+ng-leave-active
+
+
+支持的指令
+if,view,repeat,include,swtich
+repeat：ng-enter-stagger animation-delay
+
+
+ngAnimate CSS3 的方式（2）：
+
+ng-hide-add
+ng-hide-add-active
+ng-hide-remove
+ng-hide-remove-active
+
+支持的指令
+class,show,hide,model 等
+-->
+</body>
+</html>

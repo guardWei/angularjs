@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angularjs 中的 ngRoute路由插件（在index6中使用过ngSanitize插件)</title>
+    <script type="text/javascript" src="../js/angular.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.2/angular-route.min.js"></script>-->
+    <script type="text/javascript" src="../js/angular-route.min.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <!--页面跳转:
+    1.$location.path('aaa/123')
+    2.<a href=”#div1”></a>-->
+
+    <div class="header" ng-controller="userController">
+        <a href="#div1">div1</a>
+        <a ng-click="$location.path('div2')">div2</a>
+        <a href="#div3">div3</a>
+        <a href="#content/1/zww">div4</a>
+    </div>
+    <br><br>
+
+    <!--用来显示template中内容的div-->
+    <div ng-view></div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", ["ngRoute"]);
+
+    app1.run(function ($rootScope) {  //这个在ionic中次要，只需要要了解
+        $rootScope.$on('$routeChangeStart', function (event, current, pre) {
+            /*console.log(event);   //当前事件
+             console.log(current); //当前路由
+             console.log(pre);//上一个路由*/
+        });
+        $rootScope.$on('$routeChangeSuccess', function (event, current, pre) {
+            /*console.log(event);   //当前事件
+             console.log(current); //当前路由
+             console.log(pre);//上一个路由*/
+        });
+    });
+
+    app1.config(function ($routeProvider) {
+        $routeProvider
+                .when("/div1", {
+                    template: '<div style="background: red;width: 150px;">这是div1{{name}}</div>',
+                    controller: 'div1Controller'
+                })
+                .when("/div2", {
+                    template: '<div style="background: greenyellow;width: 150px;">这是div2{{name}}</div>',
+                    controller: 'div2Controller'
+                })
+                .when("/div3", {
+                    templateUrl: 'template1.html', /*通过templateUrl引入外部的页面*/
+                    controller: 'div3Controller'
+                })
+                .when("/content/:id/:name", {
+                    template: '<div style="background: pink;width: 150px;">content中的 id:{{id}} name:{{name}}</div>',
+                    controller: 'contentController'
+                })
+                .otherwise({
+                    redirectTo: "/div3"
+                });
+    });
+
+    app1.controller("userController", function ($scope, $location) {
+        $scope.name = "zhangww";
+        $scope.$location = $location;
+    });
+
+    app1.controller("div1Controller", function ($scope) {
+        $scope.name = "div1Controller";
+    });
+
+    app1.controller("div2Controller", function ($scope) {
+        $scope.name = "div2Controller";
+    });
+
+    app1.controller("div3Controller", function ($scope) {
+        $scope.name = "div3Controller";
+    });
+
+    app1.controller("contentController", function ($scope, $routeParams) {
+        console.log($routeParams);//Object {id: "1", name: "zww"}
+        $scope.id = $routeParams.id;
+        $scope.name = $routeParams.name;
+    });
+</script>
+</body>
+</html>

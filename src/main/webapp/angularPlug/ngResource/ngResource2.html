@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$resource 数据交互插件query查询数组（1）（$resource第二个参数）</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/angular-resource.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.2/angular-resource.min.js"></script>-->
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        <ul>
+            <li ng-repeat="p in data">{{p.name}} -- {{p.age}}岁 --- {{p.job}}</li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngResource']);
+    app1.controller("userController", function ($scope, $resource) {
+
+        /* var obj = $resource(":name.:type");
+
+         $scope.data = obj.query({name: "zh", type: "json"});
+         console.log($scope.data);*/
+
+
+        <!----------------$resource的第二个参数，传参用的-------------------->
+        /*var obj = $resource(":name.:type", {name: "zh", type: "json"});
+
+         $scope.data = obj.query();
+         console.log($scope.data);*/
+
+        <!----------------$resource的第二个参数和第一种方式混合使用-------------------->
+        var obj = $resource(":name.:type", {name: "zh"});
+
+        $scope.data = obj.query({type: "json"});
+        console.log($scope.data);
+
+    });
+</script>
+</body>
+</html>

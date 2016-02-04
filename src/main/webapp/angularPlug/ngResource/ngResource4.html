@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$resource 数据交互插件query请求（3）（$resource第三个参数,自定义方法）</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/angular-resource.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.2/angular-resource.min.js"></script>-->
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        {{data.job}}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngResource']);
+    app1.controller("userController", function ($scope, $resource) {
+
+        var obj = $resource("http://guardHH.nat123.net/angularJs/resource",
+                {id: '@id'}, {  getAge: {method: 'GET', params: {age: 24}, isArray: false },
+                    getJob: {method: 'GET', params: {name: 'zww', age: '24',job:'Java工程师'}, isArray: false}  });
+
+        $scope.data = obj.get({id: '30'});//后台输出{"id":"30","name":"默认姓名","age":"默认1岁","job":"默认工程师"}
+        console.log($scope.data);
+
+        $scope.data1 = obj.getAge({id: '31'})//后台输出{"id":"31","name":"默认姓名","age":"24","job":"默认工程师"}
+        console.log($scope.data1);
+
+        $scope.data2 = obj.getJob({id:'32'});//后台输出{"id":"32","name":"zww","age":"24","job":"Javaå·¥ç¨å¸"}
+        console.log($scope.data2);
+    });
+    /*其中{id: '@id'}等同于http://guardHH.nat123.net/angularJs/resource?id=:id*,同时把该参数直接置为{}*/
+
+</script>
+</body>
+</html>

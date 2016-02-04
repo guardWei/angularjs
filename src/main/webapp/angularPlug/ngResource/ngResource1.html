@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$resource 数据交互插件get带参数简单请求</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/angular-resource.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.2/angular-resource.min.js"></script>-->
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        {{data.name}}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngResource']);
+    app1.controller("userController", function ($scope, $resource) {
+
+        /*   var obj = $resource(":name.json");//用冒号，可以多个*/
+        var obj = $resource(":name.:type");
+
+        <!--------------get带参数请求方式-------------->
+        $scope.data = obj.get({name: "zww", type: "json"}, function (message) {
+
+            console.log(message); //{name: "zww", age: "24", job: "软件工程师", $promise: Promise, $resolved: true}$promise: Promise$resolved: trueage: "24"job: "软件工程师"name: "zww"__proto__: m
+            console.log(message.name);//zww
+
+            /**
+             * 在这个里面可以用message.name来进行操作 ，而在上一个例子中不能直接这么操作
+             * 这个例子也不能用$scope.data.name
+             */
+
+        }, function (error) {
+            console.log(error);
+        });
+
+        //console.log($scope.data.name) //undefined
+        //console.log($scope.data);//带方法和数据的复杂对象
+    });
+</script>
+</body>
+</html>

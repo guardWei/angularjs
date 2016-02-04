@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Angularjs 中的 ngAnimate插件示例</title>
+    <style>
+        .box {
+            transition: 1s all;
+        }
+
+        .box.ng-enter {
+            opacity: 0;
+        }
+
+        .box.ng-enter-active {
+            opacity: 1;
+        }
+
+        .box.ng-leave {
+            display: none;
+        }
+
+        .box.ng-enter-stagger {
+            animation-delay: 1000ms;
+        }
+
+    </style>
+    <script src="../js/angular.js"></script>
+    <script src="../js/angular-ngAnimate.js"></script>
+    <script>
+
+        var m1 = angular.module('myApp', ['ngAnimate']);
+        m1.controller('Aaa', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+            var timer = null;
+            $scope.data = [];
+
+            $scope.change = function (name) {
+
+                $timeout.cancel(timer);
+                timer = $timeout(function () {
+                    $http({
+                        method: 'JSONP',
+                        url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + name + '&cb=JSON_CALLBACK'
+                    }).success(function (data) {
+                        //console.log(data);
+                        $scope.data = data.s;
+                    });
+
+                }, 500);
+
+            };
+
+
+        }]);
+
+    </script>
+</head>
+
+<body>
+<div ng-controller="Aaa">
+    <input type="text" ng-model="name" ng-keyup="change(name)">
+    <input type="button" ng-click="change(name)" value="搜索">
+    <ul>
+        <li class="box" ng-repeat="d in data">{{d}}</li>
+    </ul>
+</div>
+</body>
+</html>

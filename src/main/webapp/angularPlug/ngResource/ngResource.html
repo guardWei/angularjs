@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$resource 数据交互插件get简单请求</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/angular-resource.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.2/angular-resource.min.js"></script>-->
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        {{data.name}}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngResource']);
+    app1.controller("userController", function ($scope, $resource) {
+        var obj = $resource("zww.json");
+
+        $scope.data = obj.get();
+
+        //console.log($scope.data);
+        //console.log( $scope.data.name);  //undefined  不能直接这么取值
+    });
+</script>
+</body>
+</html>

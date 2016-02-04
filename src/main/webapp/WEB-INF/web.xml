@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         id="WebApp_ID" version="2.5">
-    <display-name>angularJs</display-name>
-    <servlet>
-        <description></description>
-        <display-name>DataHander</display-name>
-        <servlet-name>DataHander</servlet-name>
-        <servlet-class>com.guard.servlet.DataHander</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DataHander</servlet-name>
-        <url-pattern>/DataHander</url-pattern>
-    </servlet-mapping>
-
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>angularJs</display-name>
+	<servlet>
+		<description></description>
+		<display-name>DataHander</display-name>
+		<servlet-name>DataHander</servlet-name>
+		<servlet-class>com.guard.servlet.DataHander</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DataHander</servlet-name>
+		<url-pattern>/DataHander</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description></description>
+		<display-name>resource</display-name>
+		<servlet-name>resource</servlet-name>
+		<servlet-class>com.guard.servlet.NgResourceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>resource</servlet-name>
+		<url-pattern>/resource</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description></description>
+		<display-name>ngResourceNgRouteServlet</display-name>
+		<servlet-name>ngResourceNgRouteServlet</servlet-name>
+		<servlet-class>com.guard.servlet.ngResourceNgRouteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ngResourceNgRouteServlet</servlet-name>
+		<url-pattern>/ngResourceNgRoute</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>

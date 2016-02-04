@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="app1">
+<head lang="en">
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <title>Angularjs 中的 ngAnimate插件(Jq方式实现)</title>
+    <script type="text/javascript" src="../js/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../js/angular.js"></script>
+    <script type="text/javascript" src="../js/angular-ngAnimate.js"></script>
+
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+
+        .box1 {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div ng-controller="userController">
+    <input type="checkbox" ng-model="bBtn"/>
+
+    <div ng-if="bBtn" class="box"></div>
+    <!--ng-if是一个dom操作，控制显示隐藏-->
+
+</div>
+<div ng-controller="userController1">
+    <input type="checkbox" ng-model="bBtn"/>
+
+    <div ng-show="bBtn" class="box1"></div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngAnimate']);
+
+    /*----------------------------enter/leave-------------------------------*/
+    app1.controller("userController", function ($scope) {
+        $scope.bBtn = true;
+    });
+
+    app1.animation(".box", function () {
+        return  {
+            enter: function (element, done) {
+                console.log(element);
+                console.log(done);
+                $(element).css({width: 0, height: 0});
+                $(element).animate({width: 200, height: 200}, 1000, done);
+                /*ng-if是一个dom操作，动画执行完后应该删除dom操作，调用done回调函数*/
+            },
+            leave: function (element, done) {
+                $(element).animate({width: 0, height: 0}, 1000, done);
+            }
+        }
+    });
+
+
+    /*----------------------------removeClass/addClass-----------------------------*/
+    app1.controller("userController1", function ($scope) {
+        $scope.bBtn = true;
+    });
+
+    app1.animation(".box1", function () {
+        return  {
+            addClass: function (element, Sclass, done) {
+                console.log(element);
+                console.log(Sclass);
+                console.log(done);
+                $(element).animate({width: 0, height: 0}, 1000, done);
+                /*ng-show display 隐藏显示*/
+            },
+            removeClass: function (element, Sclass, done) {
+                console.log(Sclass);
+                $(element).css({width: 0, height: 0});
+                $(element).animate({width: 200, height: 200}, 1000, done);
+            }
+        }
+    });
+</script>
+</body>
+</html>

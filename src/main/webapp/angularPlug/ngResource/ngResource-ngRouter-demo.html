@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$resource和ngRoute联合使用的实例</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/angular-resource.js"></script>
+    <script type="text/javascript" src="../../js/angular-route.min.js"></script>
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        <a href="#content/{{ids1}}">{{name1}}</a>
+        <a href="#content/{{ids2}}">{{name2}}</a>
+    </div>
+    <br><br>
+
+    <div ng-view></div>
+</div>
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngRoute', 'ngResource']);
+
+    app1.config(function ($routeProvider) {
+        $routeProvider.
+                when("/content/:ids", {
+                    template: "<div>{{data.id}}--{{data.name}}--{{data.age}}--{{data.job}}</div>",
+                    controller: 'div1Controller'
+                })
+                .otherwise({
+                    redirectTo: "/content/1"
+                })
+    });
+
+    app1.controller("div1Controller", function ($scope, $routeParams, $resource) {
+        var obj = $resource("http://guardHH.nat123.net/angularJs/ngResourceNgRoute");
+        $scope.data = obj.get({id: $routeParams.ids});
+        console.log($scope.data);
+    });
+
+    app1.controller("userController", function ($scope) {
+        $scope.name1 = "zww";
+        $scope.name2 = "zh";
+
+
+        $scope.ids1 = "1";
+        $scope.ids2 = "2";
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>$resource 数据交互插件query请求(2)</title>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/angular-resource.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.0-rc.2/angular-resource.min.js"></script>-->
+</head>
+<body>
+<div ng-app="app1">
+    <div ng-controller="userController">
+        {{data.id}}
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ['ngResource']);
+    app1.controller("userController", function ($scope, $resource) {
+
+        var obj = $resource("http://guardHH.nat123.net/angularJs/resource",
+                {id: '@id'});
+
+        $scope.data = obj.get({id: '80'});
+        console.log($scope.data);
+    });
+    /*其中{id: '@id'}等同于http://guardHH.nat123.net/angularJs/resource?id=:id*,同时把该参数直接置为{}*/
+
+</script>
+</body>
+</html>
