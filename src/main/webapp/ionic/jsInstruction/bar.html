@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="app1">
+<head>
+    <meta charset="UTF-8">
+    <title>ion-header-bar ion-footer-bar以及样式及内容</title>
+    <script src="../lib/js/ionic.bundle.min.js" type="text/javascript"></script>
+    <link href="../lib/css/ionic.min.css" rel="stylesheet" type="text/css">
+</head>
+<body ng-controller="firstController">
+
+<!-- no-tap-scroll - 当点击标题时，是否将内容区域自动滚动到最开始。允许值：true |false，默认为滚动 false。(本例子中可能是ionic版本不支持)-->
+<ion-header-bar class="balanced-bg" align-title="center" no-tap-scroll="false">
+    <h1 class="title light">ion-header-bar标题</h1><!--light加在p标签中可以放在align-title中，h1标签则要放在h1的class中-->
+</ion-header-bar>
+
+<ion-content>
+    <ul class="list">
+        <li class="item" ng-repeat="item in items">{{item}}</li>
+    </ul>
+</ion-content>
+
+<!--ion-content中：
+1.试着滚动右边示例效果的内容区域，你会发现浮现的滚动条。当滚动停止时，浮动条消失。
+这是 ionic 定制的滚动视图，可以使用 overflow-scroll 属性设置使用系统内置的滚动条
+2.scroll="false" 禁止滚动 用于百度地图 或者谷歌地图显示-->
+
+<ion-footer-bar class="dark-bg light" align-title="right">
+    <i class="icon ion-search" style="font-size: 20px"></i><!--可以在任何元素中插入图标，使用元素的 font-size 样式指定图标的大小-->
+    <p class="title">ion-footer-bar尾部</p>
+    <!--要了解有哪些图标及具体名称，需要访问 ionics.com-->
+    <p class="button balanced-border energized-bg"><i class="icon ion-home"></i>home</p>
+</ion-footer-bar>
+
+</body>
+<script type="text/javascript">
+    var app1 = angular.module("app1", ["ionic"]);
+    app1.controller("firstController", function ($scope) {
+        $scope.items = [];
+        for (var i = 0; i < 30; i++) {
+            $scope.items.push("line " + i);
+        }
+    });
+</script>
+</html>

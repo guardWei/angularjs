@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="app1">
+<head>
+    <meta charset="UTF-8">
+    <title>ionic 滚动框(ion-scroll 指令声明一个可滚动的容器元素，用户可以按住内容进行拖动)</title>
+    <script src="../lib/js/ionic.bundle.min.js" type="text/javascript"></script>
+    <link href="../lib/css/ionic.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<ion-header-bar class="positive-bg" align-title="right">
+    <h1 class="title light">ion-scroll</h1>
+</ion-header-bar>
+<ion-scroll zooming="true" direction="xy" style="width: 320px;height: 320px">
+    <img src="../image/map.jpg" height="5000px" width="5000px"/>
+</ion-scroll>
+
+<!--direction - 内容可以滚动的方向。允许值：x|y|xy。默认为 y。
+zooming - 是否支持 pinch-to-zoom(捏拉缩放)。允许值：true | false。-->
+
+
+<script type="text/javascript">
+    var app1 = angular.module("app1", ["ionic"]);
+    /*若将ng-app="ionic"则这句话可以不需要*/
+</script>
+</body>
+</html>
